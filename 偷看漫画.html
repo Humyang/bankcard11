@@ -8,8 +8,9 @@
     <title>Template</title>
     <style>
     	img{
-    		width: 900px;
+    		/*width: 900px;*/
     		margin-bottom: 50px;
+    		display: block;
     	}
     </style>
     
@@ -48,7 +49,7 @@
 })(jQuery);
 
 	var imgwrap = $("#image_wrap")
-	var start = 29
+	var start = 0
 	var switch_some = $.fn.switchFunc({
 		switch_1:function(){
 			$('body').children().hide()
@@ -65,18 +66,18 @@
 	});
 	$("#prevPage").on("click",function(){
 		imgwrap.children().remove()
-		start = start - 10
-		for (var i =0; i < 10; i++) {
+		start = start - 200
+		for (var i =0; i < 200; i++) {
 			start++;
-			imgwrap.append('<img src="http://pic.fxdm.cc/tu/12/第4卷/'+start+'.jpg" alt="">')
+			imgwrap.append('<img src="http://pic.fxdm.cc/tu/12/第12卷/'+start+'.jpg" alt="">')
 		}
 	})
 
 	$("#nextPage").on("click",function(){
 		imgwrap.children().remove()
-		for (var i =0; i < 10; i++) {
+		for (var i =0; i < 200; i++) {
 			start++;
-			imgwrap.append('<img src="http://pic.fxdm.cc/tu/12/第4卷/'+start+'.jpg" alt="">')
+			imgwrap.append('<img src="http://pic.fxdm.cc/tu/12/第12卷/'+start+'.jpg" alt="">')
 		}
 	})
 
