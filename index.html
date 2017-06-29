@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!-- <link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_6ju4lzi860qkt9.css"> -->
+    <script src="./jquery-1.7.2.min.js"></script>
+    <script src="./jquery.bankcard.0.0.1.js"></script>
+    <title>Template</title>
+    <!-- <style>
+		.cardElement_wrap{
+			display: relative;
+		}
+		.card_element {
+			background-color: #fffbe6;
+			width: 253px;
+			border: 1px solid #178dcc;
+			padding-left: 10px;
+			font-size: 19px;
+			font-weight: 600;
+			color: #ff7618;
+			height: 40px;
+			overflow: hidden;
+			line-height: 40px;
+		}
+    </style> -->
+</head>
+<body>
+
+<input type="text" id="bankcard">
+<script >
+	$(function(){
+		$("#bankcard").bankcard({usage:false})
+	})
+</script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!-- <link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_6ju4lzi860qkt9.css"> -->
+    <script src="./jquery-1.7.2.min.js"></script>
+    <title>Template</title>
+    <style>
+    	img{
+    		width: 900px;
+    		margin-bottom: 50px;
+    	}
+    </style>
+    
+</head>
+<body>
+<!-- <img src="http://pic.fxdm.cc/tu/12/第4卷/29.jpg" alt=""> -->
+<a href="#" id="prevPage" style="cursor: pointer;">上10页</a>
+<div class="shadow">
+	
+</div>
+<div id="image_wrap">
+	
+</div>
+<a href="#" id="nextPage" style="cursor: pointer;">下10页</a>
+
+<script >
+
+(function($){
+	$.fn.switchFunc=function(settings){
+		settings=$.extend({
+			switch_1:function(){},
+			switch_2:function(){}
+		},settings);
+		var flag = false
+		return function(){
+			if(!flag){
+				console.log('sw1')
+				settings.switch_1()
+			}else{
+				console.log('sw2')
+				settings.switch_2()
+			}
+			flag=!flag
+		}
+	}
+})(jQuery);
+
+	var imgwrap = $("#image_wrap")
+	var start = 29
+	var switch_some = $.fn.switchFunc({
+		switch_1:function(){
+			$('body').children().hide()
+		},
+		switch_2:function(){
+			$('body').children().show()
+		}
+	})
+	$('body').on("keyup",function(event){
+		// console.log(event)
+		if(event.keyCode === 192){
+			switch_some()
+		}
+	});
+	$("#prevPage").on("click",function(){
+		imgwrap.children().remove()
+		start = start - 10
+		for (var i =0; i < 10; i++) {
+			start++;
+			imgwrap.append('<img src="http://pic.fxdm.cc/tu/12/第4卷/'+start+'.jpg" alt="">')
+		}
+	})
+
+	$("#nextPage").on("click",function(){
+		imgwrap.children().remove()
+		for (var i =0; i < 10; i++) {
+			start++;
+			imgwrap.append('<img src="http://pic.fxdm.cc/tu/12/第4卷/'+start+'.jpg" alt="">')
+		}
+	})
+
+
+</script>
+</body>
+</html>
