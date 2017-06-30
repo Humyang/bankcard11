@@ -8,19 +8,42 @@
     <title>Template</title>
     <style>
     	img{
-    		/*width: 900px;*/
-    		margin-bottom: 50px;
-    		display: block;
+		    /* width: 900px; */
+		    margin-bottom: 50px;
+		    display: block;
+		    min-height: 20px;
+		    /* min-width: 500px; */
+		    background-color: #e4e4e4;
+    	}
+    	.boxlayer{
+    		display: none;
+    		position: fixed;
+		    width: 100%;
+		    height: 100%;
+		    /*background-color: #ddd;*/
+		    z-index: 99999;
+		    top: 0;
+		    left: 0;
+		    margin-top:50px;
+    	}
+    	.boxlayer iframe{
+    		    width: 100%;
+			    height: 100%;
+			    /*opacity: 0.1;*/
+    	}
+    	p{
+    		cursor: pointer;
     	}
     </style>
     
 </head>
 <body>
-<!-- <img src="http://pic.fxdm.cc/tu/12/第4卷/29.jpg" alt=""> -->
+<!-- <img src="http://pic.fxdm.cc/tu/12/第4卷/29.jpg2" alt=""> -->
 <a href="#" id="prevPage" style="cursor: pointer;">上10页</a>
-<div class="shadow">
-	
+<div class="boxlayer">
+<iframe src="https://www.gcy168.com/" frameborder="0"></iframe>
 </div>
+<!-- <img src="http://pic.fxdm.cc/tu/12/第13卷/0.jpg" alt=""> -->
 <div id="image_wrap">
 	
 </div>
@@ -28,34 +51,64 @@
 
 <script >
 
-(function($){
-	$.fn.switchFunc=function(settings){
-		settings=$.extend({
-			switch_1:function(){},
-			switch_2:function(){}
-		},settings);
-		var flag = false
-		return function(){
-			if(!flag){
-				console.log('sw1')
-				settings.switch_1()
-			}else{
-				console.log('sw2')
-				settings.switch_2()
-			}
-			flag=!flag
+var switchFunc = function(settings){
+	settings=$.extend({
+		switch_1:function(){},
+		switch_2:function(){}
+	},settings);
+	var flag = false
+	return function(){
+		if(!flag){
+			settings.switch_1()
+		}else{
+			settings.switch_2()
+		}
+		flag=!flag
+	}
+}
+
+function newImage(url){
+	// 构造image
+	var myImage = new Image();
+	myImage.src = url;
+	myImage.useMap = 0
+	
+	var index = 0
+	var flagA = true
+	myImage.onerror = function(event){
+		if(flagA){
+			flagA = !flagA
+			setTimeout(function() {
+				index++;
+				console.log(index)
+				event.target.useMap = index
+			}, 1000);
+			var a = document.createElement("p"); 
+			a.innerText = '重新加载' + event.target.src
+			a.onclick = function(){
+				var index = 0
+				var src = event.target.src
+
+				return function(){
+					index++;
+					event.target.src = src+'?r='+index
+				}
+
+			}()
+			$(event.target).before(a)
 		}
 	}
-})(jQuery);
-
+	return myImage;
+}
 	var imgwrap = $("#image_wrap")
 	var start = 0
-	var switch_some = $.fn.switchFunc({
+	var pageNumber = 200
+	var switch_some = switchFunc({
 		switch_1:function(){
-			$('body').children().hide()
+			$('.boxlayer').show()
 		},
 		switch_2:function(){
-			$('body').children().show()
+			$('.boxlayer').hide()
 		}
 	})
 	$('body').on("keyup",function(event){
@@ -64,24 +117,86 @@
 			switch_some()
 		}
 	});
+
+	// var url = 'http://pic.fxdm.cc/tu/12/第161话/'
+
+
+
+
 	$("#prevPage").on("click",function(){
 		imgwrap.children().remove()
-		start = start - 200
-		for (var i =0; i < 200; i++) {
+		start = start - pageNumber
+		var img = newImage()
+		for (var i =0; i < pageNumber; i++) {
 			start++;
-			imgwrap.append('<img src="http://pic.fxdm.cc/tu/12/第12卷/'+start+'.jpg" alt="">')
+			imgwrap.append(imgUrlArray[start])
 		}
 	})
 
 	$("#nextPage").on("click",function(){
 		imgwrap.children().remove()
-		for (var i =0; i < 200; i++) {
+		for (var i =0; i < pageNumber; i++) {
 			start++;
-			imgwrap.append('<img src="http://pic.fxdm.cc/tu/12/第12卷/'+start+'.jpg" alt="">')
+			imgwrap.append(newImage(imgUrlArray[start]))
 		}
 	})
+	// urlArray(`http://pic.fxdm.cc/tu/12/第${section_start}话/`)
+	/*
+		section_start 类型
+			数字：20，直接递增
+			区间数组（两位）：[0,50] 从开始循环至结尾
+			多位数组：[0,1,3,4] 单独遍历数组
+	*/
+	var urlArray = function(section_start){
 
+		// var base_url = 
+		var array = []
+		var page_number = 25
+		var section_number = 100
 
+		function stringComb(section,index){
+			return `http://pic.fxdm.cc/tu/12/第${section}话/${index}`+'.jpg'
+		}
+
+		if(typeof section_start === 'number'){
+			for (var i = section_start;i<section_number;i++) {
+				var section = i
+				for (var i2 = 0;i2<page_number;i2++) {
+					var index = i2
+					array.push(stringComb(section,index))
+				}
+			}
+		}else if(typeof section_start === 'object'){
+			if(section_start.length > 2){
+				section_start.reverse()
+				for (var i = section_start.length - 1; i >= 0; i--) {
+					var section = section_start[i]
+					for (var i2 = 0;i2<page_number;i2++) {
+						var index = i2
+						array.push(stringComb(section,index))
+					}
+				}
+			}else if(section_start.length === 2){
+				var start = section_start[0]
+				var end = section_start[1]
+				for (var i = start; i < end; i++) {
+					var section = i
+					for (var i2 = 0;i2<page_number;i2++) {
+						var index = i2
+						array.push(stringComb(section,index))
+					}
+				}
+			}else{
+				alert('seciton_start未知类型')
+				return
+			}
+		}else{
+			alert('seciton_start未知类型')
+			return
+		}
+		return array
+	}
+	var imgUrlArray = urlArray([162,165])
 </script>
 </body>
 </html>
