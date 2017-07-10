@@ -39,10 +39,9 @@
 </head>
 <body>
 <!-- <img src="http://pic.fxdm.cc/tu/12/第4卷/29.jpg2" alt=""> -->
-<a id="loadHistory" href="#">上次观看</a>
 <a href="#" id="prevPage" style="cursor: pointer;">上10页</a>
 <div class="boxlayer">
-<!-- <iframe src="https://www.gcy168.com/" frameborder="0"></iframe> -->
+<iframe src="https://www.gcy168.com/" frameborder="0"></iframe>
 </div>
 <!-- <img src="http://pic.fxdm.cc/tu/12/第13卷/0.jpg" alt=""> -->
 <div id="image_wrap">
@@ -76,15 +75,14 @@ function newImage(url){
 	
 	var index = 0
 	var flagA = true
-	myImage.onerror = function(event,a,b){
-		// console.log(event,a,b)
+	myImage.onerror = function(event){
 		if(flagA){
 			flagA = !flagA
-			// setTimeout(function() {
-			// 	index++;
-			// 	// console.log(index)
-			// 	event.target.useMap = index
-			// }, 1000);
+			setTimeout(function() {
+				index++;
+				console.log(index)
+				event.target.useMap = index
+			}, 1000);
 			var a = document.createElement("p"); 
 			a.innerText = '重新加载' + event.target.src
 			a.onclick = function(){
@@ -104,7 +102,7 @@ function newImage(url){
 }
 	var imgwrap = $("#image_wrap")
 	var start = 0
-	var pageNumber = 100
+	var pageNumber = 200
 	var switch_some = switchFunc({
 		switch_1:function(){
 			$('.boxlayer').show()
@@ -119,7 +117,7 @@ function newImage(url){
 			switch_some()
 		}
 	});
-	// $('body').append(newImage('http://photocdn.sohu.com/20160131/mp57404254_1454233128824_392.jpeg'))
+
 	// var url = 'http://pic.fxdm.cc/tu/12/第161话/'
 
 
@@ -129,25 +127,18 @@ function newImage(url){
 		imgwrap.children().remove()
 		start = start - pageNumber
 		var img = newImage()
-		localStorage.setItem('start',start)
 		for (var i =0; i < pageNumber; i++) {
 			start++;
-			imgwrap.append(newImage(imgUrlArray[start]))
+			imgwrap.append(imgUrlArray[start])
 		}
-		
 	})
 
 	$("#nextPage").on("click",function(){
 		imgwrap.children().remove()
-		localStorage.setItem('start',start)
 		for (var i =0; i < pageNumber; i++) {
 			start++;
 			imgwrap.append(newImage(imgUrlArray[start]))
 		}
-	})
-	$("#loadHistory").on('click',function(){
-		// imgUrlArray = JSON.parse(localStorage.getItem('imgUrlArray'))
-		start = localStorage.getItem('start')
 	})
 	// urlArray(`http://pic.fxdm.cc/tu/12/第${section_start}话/`)
 	/*
@@ -161,7 +152,7 @@ function newImage(url){
 		// var base_url = 
 		var array = []
 		var page_number = 25
-		var section_number = 1000
+		var section_number = 100
 
 		function stringComb(section,index){
 			return `http://pic.fxdm.cc/tu/12/第${section}话/${index}`+'.jpg'
@@ -205,8 +196,7 @@ function newImage(url){
 		}
 		return array
 	}
-	var imgUrlArray = urlArray('323最终话')
-	// localStorage.setItem('imgUrlArray',JSON.stringify(imgUrlArray))
+	var imgUrlArray = urlArray([171,200])
 </script>
 </body>
 </html>
