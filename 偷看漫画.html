@@ -38,17 +38,26 @@
     
 </head>
 <body>
+
 <!-- <img src="http://pic.fxdm.cc/tu/12/第4卷/29.jpg2" alt=""> -->
 <a id="loadHistory" href="#">上次观看</a>
 <a href="#" id="prevPage" style="cursor: pointer;">上10页</a>
+
+<div>
+	字符串解析类型（未实现）
+	<select name="" id="">
+		<option value="omanhua">http://www.omanhua.com 哦漫画 http://pic.fxdm.cc/tu/12/第${section}话/${index}+'.jpg'</option>
+	</select>
+</div>
+<a href="#" id="prevPage" style="cursor: pointer;">上200页</a>
+
 <div class="boxlayer">
 <!-- <iframe src="https://www.gcy168.com/" frameborder="0"></iframe> -->
 </div>
-<!-- <img src="http://pic.fxdm.cc/tu/12/第13卷/0.jpg" alt=""> -->
 <div id="image_wrap">
 	
 </div>
-<a href="#" id="nextPage" style="cursor: pointer;">下10页</a>
+<a href="#" id="nextPage" style="cursor: pointer;">下200页</a>
 
 <script >
 
@@ -104,7 +113,7 @@ function newImage(url){
 }
 	var imgwrap = $("#image_wrap")
 	var start = 0
-	var pageNumber = 100
+	var pageNumber = 200
 	var switch_some = switchFunc({
 		switch_1:function(){
 			$('.boxlayer').show()
@@ -160,11 +169,22 @@ function newImage(url){
 
 		// var base_url = 
 		var array = []
-		var page_number = 25
-		var section_number = 1000
+		var page_number = 250
+
+		var section_number = 100
+		// http://www.ikanman.com/comic/5060/ 齐木楠雄的灾难
 
 		function stringComb(section,index){
-			return `http://pic.fxdm.cc/tu/12/第${section}话/${index}`+'.jpg'
+			// return `http://pic.fxdm.cc/tu/12/第${section}话/${index}`+'.jpg'
+			var letfnum = '00'
+			if(index>=10){
+letfnum = '0'
+			}
+			if(index>=100){
+				letfnum = ''
+			}
+			letfnum +=index
+			return `http://pm.531mk.com/lifanacgup/lifanacg/20170612/2/${letfnum}.jpg`
 		}
 
 		if(typeof section_start === 'number'){
@@ -199,14 +219,26 @@ function newImage(url){
 				alert('seciton_start未知类型')
 				return
 			}
-		}else{
+		}else if(typeof section_start === 'string'){
+			for (var i2 = 0;i2<page_number;i2++) {
+				var index = i2
+				array.push(stringComb(section_start,index))
+			}
+		}
+		else{
 			alert('seciton_start未知类型')
 			return
 		}
 		return array
 	}
+// <<<<<<< HEAD
+// urlArray([171,175])
+// urlArray('323最终话')
 	var imgUrlArray = urlArray('323最终话')
 	// localStorage.setItem('imgUrlArray',JSON.stringify(imgUrlArray))
+// =======
+	// var imgUrlArray = urlArray([171,175])
+// >>>>>>> origin/master
 </script>
 </body>
 </html>
